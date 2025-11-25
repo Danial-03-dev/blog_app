@@ -1,7 +1,10 @@
+import 'package:blog_app/core/utils/show_snackbar.dart';
+import 'package:blog_app/features/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:blog_app/features/auth/presentation/widgets/button/custom_text_button.dart';
 import 'package:blog_app/features/auth/presentation/widgets/button/gradient_button.dart';
 import 'package:blog_app/features/auth/presentation/widgets/inputs/auth_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
@@ -17,7 +20,17 @@ class _SignupFormState extends State<SignupForm> {
 
   final formKey = GlobalKey<FormState>();
 
-  void handleSignUp() {}
+  void handleSignUp() {
+    if (formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(
+        AuthSignUpEvent(
+          name: nameController.text.trim(),
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        ),
+      );
+    }
+  }
 
   void handleLogin() {
     Navigator.pop(context);
@@ -56,7 +69,18 @@ class _SignupFormState extends State<SignupForm> {
               ),
             ],
           ),
-          const GradientButton(text: 'Sign Up'),
+          BlocConsumer<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthFailureState) {
+                showSnackbar(context: context, text: state.message);
+              }
+            },
+            builder: (context, state) => GradientButton(
+              loading: state is AuthLoadingState,
+              onPressed: handleSignUp,
+              text: 'Sign Up',
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

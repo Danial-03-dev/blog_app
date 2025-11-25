@@ -1,10 +1,18 @@
+import 'package:blog_app/core/common/widgets/loader.dart';
 import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 
 class GradientButton extends StatelessWidget {
   final String text;
+  final VoidCallback? onPressed;
+  final bool loading;
 
-  const GradientButton({super.key, required this.text});
+  const GradientButton({
+    super.key,
+    required this.text,
+    this.onPressed,
+    this.loading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +31,17 @@ class GradientButton extends StatelessWidget {
           backgroundColor: AppPallete.transparentColor,
           shadowColor: AppPallete.transparentColor,
         ),
-        onPressed: () {},
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
+        onPressed: loading ? null : onPressed,
+        child: loading
+            ? Loader()
+            : Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
       ),
     );
   }
