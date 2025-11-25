@@ -1,6 +1,6 @@
 import 'package:blog_app/core/error/exceptions.dart';
 import 'package:blog_app/features/auth/data/models/user_modal.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 abstract interface class AuthRemoteDataSource {
   Future<UserModal> loginWithEmailPassword({
@@ -15,7 +15,7 @@ abstract interface class AuthRemoteDataSource {
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final SupabaseClient supabaseClient;
+  final sb.SupabaseClient supabaseClient;
 
   const AuthRemoteDataSourceImpl({required this.supabaseClient});
 
@@ -23,9 +23,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModal> loginWithEmailPassword({
     required String email,
     required String password,
-  }) {
-    // TODO: implement loginWithEmailPassword
-    throw UnimplementedError();
+  }) async {
+    return _getUserModal(
+      () => supabaseClient.auth.signInWithPassword(
+        email: email,
+        password: password,
+      ),
+    );
   }
 
   @override
@@ -34,12 +38,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String email,
     required String password,
   }) async {
-    try {
-      final response = await supabaseClient.auth.signUp(
+    return _getUserModal(
+      () => supabaseClient.auth.signUp(
         email: email,
         password: password,
         data: {'name': name},
-      );
+      ),
+    );
+  }
+
+  Future<UserModal> _getUserModal(Future<sb.AuthResponse> Function() fn) async {
+    try {
+      final response = await fn();
 
       if (response.user == null) {
         throw const ServerException(message: 'Useris null!');
