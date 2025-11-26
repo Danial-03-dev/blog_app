@@ -23,6 +23,14 @@ class BlogCategoryChip extends StatelessWidget {
         ? AppPallete.transparentColor
         : AppPallete.borderColor;
 
+    if (onPressed == null) {
+      return Chip(
+        label: Text(label),
+        side: BorderSide(color: chipBorderColor),
+        color: WidgetStatePropertyAll(chipColor),
+      );
+    }
+
     return ActionChip(
       label: Text(label),
       side: BorderSide(color: chipBorderColor),

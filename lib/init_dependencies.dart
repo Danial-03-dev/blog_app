@@ -7,6 +7,12 @@ import 'package:blog_app/features/auth/domain/usecases/current_user.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_login.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:blog_app/features/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:blog_app/features/blog/data/data_sources/blog_remote_data_source.dart';
+import 'package:blog_app/features/blog/data/repositories/blog_repository_impl.dart';
+import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
+import 'package:blog_app/features/blog/domain/usecases/get_all_blogs.dart';
+import 'package:blog_app/features/blog/domain/usecases/upload_blog.dart';
+import 'package:blog_app/features/blog/presentation/blocs/blog_bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,6 +28,7 @@ Future<void> initDependencies() async {
 
   _initCore();
   _initAuth();
+  _initBlog();
 }
 
 void _initCore() {
@@ -40,7 +47,7 @@ void _initAuth() {
     ..registerFactory<AuthRepository>(
       () => AuthRepositoryImpl(remoteDataSource: serviceLocator()),
     )
-    // Domain - User Cases
+    // Domain - Use Cases
     ..registerFactory(() => UserSignUp(authRepository: serviceLocator()))
     ..registerFactory(() => UserLogin(authRepository: serviceLocator()))
     ..registerFactory(() => CurrentUser(authRepository: serviceLocator()))
@@ -53,5 +60,28 @@ void _initAuth() {
         currentUser: serviceLocator(),
         appUserCubit: serviceLocator(),
       ),
+    );
+}
+
+void _initBlog() {
+  // Data
+  // Data - Data Source
+  serviceLocator
+    ..registerFactory<BlogRemoteDataSource>(
+      () => BlogRemoteDataSourceImpl(supabaseClient: serviceLocator()),
+    )
+    // Domain
+    // Domain - Repositories
+    ..registerFactory<BlogRepository>(
+      () => BlogRepositoryImpl(blogRemoteDataSource: serviceLocator()),
+    )
+    // Domain - Use Cases
+    ..registerFactory(() => UploadBlog(blogRepository: serviceLocator()))
+    ..registerFactory(() => GetAllBlogs(blogRepository: serviceLocator()))
+    // Presentation
+    // Presentation - Bloc
+    ..registerLazySingleton(
+      () =>
+          BlogBloc(uploadBlog: serviceLocator(), getAllBlogs: serviceLocator()),
     );
 }

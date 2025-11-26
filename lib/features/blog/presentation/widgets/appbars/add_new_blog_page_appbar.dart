@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 
 class AddNewBlogPageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const AddNewBlogPageAppBar({super.key});
+  final VoidCallback? handleAddBlog;
+
+  const AddNewBlogPageAppBar({super.key, this.handleAddBlog});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      actions: [IconButton(onPressed: () {}, icon: Icon(Icons.done_rounded))],
+      actions: [
+        IconButton(onPressed: handleAddBlog, icon: Icon(Icons.done_rounded)),
+      ],
     );
   }
 
