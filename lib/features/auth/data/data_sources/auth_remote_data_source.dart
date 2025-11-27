@@ -64,6 +64,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return userWithExtraSessionInfo(
         UserModal.fromJson(response.user!.toJson()),
       );
+    } on sb.AuthException catch (e) {
+      throw ServerException(message: e.message);
     } catch (e) {
       throw ServerException(message: e.toString());
     }

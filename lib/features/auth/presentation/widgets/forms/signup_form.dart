@@ -74,6 +74,9 @@ class _SignupFormState extends State<SignupForm> {
               if (state is AuthFailureState) {
                 showSnackbar(context: context, text: state.message);
               }
+              if (state is AuthSuccessState) {
+                Navigator.pop(context);
+              }
             },
             builder: (context, state) => GradientButton(
               loading: state is AuthLoadingState,

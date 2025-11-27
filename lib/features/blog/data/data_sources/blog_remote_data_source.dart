@@ -32,6 +32,8 @@ class BlogRemoteDataSourceImpl extends BlogRemoteDataSource {
           .select();
 
       return BlogModel.fromJson(blog: blogData.first);
+    } on sb.PostgrestException catch (e) {
+      throw ServerException(message: e.message);
     } catch (e) {
       throw ServerException(message: e.toString());
     }
@@ -56,6 +58,8 @@ class BlogRemoteDataSourceImpl extends BlogRemoteDataSource {
             fileOptions: sb.FileOptions(contentType: mimeType),
           );
       return supabaseClient.storage.from(table).getPublicUrl(path);
+    } on sb.StorageException catch (e) {
+      throw ServerException(message: e.message);
     } catch (e) {
       throw ServerException(message: e.toString());
     }
@@ -75,6 +79,8 @@ class BlogRemoteDataSourceImpl extends BlogRemoteDataSource {
             ).copyWith(posterName: blog['profiles']['name']),
           )
           .toList();
+    } on sb.PostgrestException catch (e) {
+      throw ServerException(message: e.message);
     } catch (e) {
       throw ServerException(message: e.toString());
     }

@@ -1,3 +1,4 @@
+import 'package:blog_app/core/constants/constants.dart';
 import 'package:blog_app/features/blog/presentation/widgets/blog_category_chip.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +13,7 @@ class BlogCategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoryList = [
-      'Technology',
-      'Business',
-      'Programming',
-      'Entertainment',
-    ];
+    final categoryList = Constants.categoryList;
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
