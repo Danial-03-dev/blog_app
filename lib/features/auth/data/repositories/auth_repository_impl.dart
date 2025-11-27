@@ -1,22 +1,32 @@
 import 'package:blog_app/core/error/exceptions.dart';
 import 'package:blog_app/core/error/failures.dart';
+import 'package:blog_app/core/network/connection_checker.dart';
 import 'package:blog_app/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:blog_app/core/common/entities/user.dart';
+import 'package:blog_app/features/auth/data/models/user_modal.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
+  final ConnectionChecker connectionChecker;
 
-  const AuthRepositoryImpl({required this.remoteDataSource});
+  const AuthRepositoryImpl({
+    required this.remoteDataSource,
+    required this.connectionChecker,
+  });
 
   Future<Either<Failure, User>> _getUser(Future<User?> Function() fn) async {
     try {
+      if (!await (connectionChecker.isConnected)) {
+        return left(Failure(message: 'No internet connection!'));
+      }
+
       final user = await fn();
 
       if (user == null) {
-        return left(Failure(message: 'User not logged in'));
+        return left(Failure(message: 'User is not logged in!'));
       }
 
       return right(user);
@@ -56,7 +66,19 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, User>> getCurrentUser() {
+  Future<Either<Failure, User>> getCurrentUser() async {
+    if (!await (connectionChecker.isConnected)) {
+      final session = remoteDataSource.currentUserSession;
+
+      if (session == null) {
+        return left(Failure(message: 'User is not logged in!'));
+      }
+
+      final user = session.user;
+
+      return right(UserModal(id: user.id, name: "", email: user.email ?? ''));
+    }
+
     return _getUser(() => remoteDataSource.getCurrentUserData());
   }
 }
