@@ -1,6 +1,6 @@
 {
-    "name": "blog_app",
-    "short_name": "blog_app",
+    "name": "Shared Thoughts",
+    "short_name": "Shared Thoughts",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

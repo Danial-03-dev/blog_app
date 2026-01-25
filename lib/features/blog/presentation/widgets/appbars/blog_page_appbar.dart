@@ -11,7 +11,7 @@ class BlogPageAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return AppBar(
-      title: const Text('Blog App'),
+      title: const Text('Shared Thoughts'),
       actions: [
         IconButton(
           onPressed: handleAddBlog,
