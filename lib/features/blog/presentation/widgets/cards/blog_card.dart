@@ -51,7 +51,13 @@ class BlogCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text('$readingTime min'),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Author: ${blog.posterName}'),
+                      Text('Reading time: $readingTime min'),
+                    ],
+                  ),
                 ],
               ),
             ),
