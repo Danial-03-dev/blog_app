@@ -81,10 +81,18 @@ void _initBlog() {
     // Domain - Use Cases
     ..registerFactory(() => UploadBlog(blogRepository: serviceLocator()))
     ..registerFactory(() => GetAllBlogs(blogRepository: serviceLocator()))
+    ..registerFactory(
+      () => GetCurrentUserBlogs(blogRepository: serviceLocator()),
+    )
+    ..registerFactory(() => DeleteBlog(blogRepository: serviceLocator()))
     // Presentation
     // Presentation - Bloc
     ..registerLazySingleton(
-      () =>
-          BlogBloc(uploadBlog: serviceLocator(), getAllBlogs: serviceLocator()),
+      () => BlogBloc(
+        uploadBlog: serviceLocator(),
+        getAllBlogs: serviceLocator(),
+        getCurrentUserBlogs: serviceLocator(),
+        deleteBlog: serviceLocator(),
+      ),
     );
 }

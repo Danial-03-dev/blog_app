@@ -16,6 +16,9 @@ abstract interface class BlogRemoteDataSource {
   });
 
   Future<List<BlogModel>> getAllBlogs();
+  Future<List<BlogModel>> getCurrentUserBlogs();
+
+  Future<void> deleteBlog({required String blogId});
 }
 
 class BlogRemoteDataSourceImpl extends BlogRemoteDataSource {
@@ -79,6 +82,54 @@ class BlogRemoteDataSourceImpl extends BlogRemoteDataSource {
             ).copyWith(posterName: blog['profiles']['name']),
           )
           .toList();
+    } on sb.PostgrestException catch (e) {
+      throw ServerException(message: e.message);
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<List<BlogModel>> getCurrentUserBlogs() async {
+    try {
+      final user = supabaseClient.auth.currentUser;
+
+      if (user == null) {
+        throw ServerException(message: 'User not logged in');
+      }
+
+      final blogs = await supabaseClient
+          .from('blogs')
+          .select('*, profiles (name)')
+          .eq('poster_id', user.id);
+
+      return blogs
+          .map(
+            (blog) => BlogModel.fromJson(
+              blog: blog,
+            ).copyWith(posterName: blog['profiles']['name']),
+          )
+          .toList();
+    } on sb.PostgrestException catch (e) {
+      throw ServerException(message: e.message);
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<void> deleteBlog({required String blogId}) async {
+    try {
+      final user = supabaseClient.auth.currentUser;
+      if (user == null) {
+        throw ServerException(message: 'User not logged in');
+      }
+
+      await supabaseClient
+          .from('blogs')
+          .delete()
+          .eq('id', blogId)
+          .eq('poster_id', user.id);
     } on sb.PostgrestException catch (e) {
       throw ServerException(message: e.message);
     } catch (e) {

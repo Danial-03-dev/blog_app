@@ -22,3 +22,11 @@ final class BlogUploadEvent extends BlogEvent {
 }
 
 final class BlogGetAllBlogsEvent extends BlogEvent {}
+
+final class BlogGetCurrentUserBlogsEvent extends BlogEvent {}
+
+final class BlogDeleteEvent extends BlogEvent {
+  final String blogId;
+
+  const BlogDeleteEvent({required this.blogId});
+}

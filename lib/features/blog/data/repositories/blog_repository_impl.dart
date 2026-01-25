@@ -79,4 +79,43 @@ class BlogRepositoryImpl implements BlogRepository {
       return left(Failure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, List<Blog>>> getCurrentUserBlogs() async {
+    try {
+      if (!await (connectionChecker.isConnected)) {
+        final blogs = blogLocalDataSource.loadBlogs();
+        return right(blogs);
+      }
+
+      final blogs = await blogRemoteDataSource.getCurrentUserBlogs();
+
+      blogLocalDataSource.uploadLocalBlogs(blogs: blogs);
+
+      return right(blogs);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteBlog({required String blogId}) async {
+    try {
+      if (!await (connectionChecker.isConnected)) {
+        return left(Failure(message: 'No internet connection!'));
+      }
+
+      final response = await blogRemoteDataSource.deleteBlog(blogId: blogId);
+
+      final localBlogs = blogLocalDataSource.loadBlogs();
+      final updatedBlogs = localBlogs.where((blog) {
+        return blog.id != blogId;
+      }).toList();
+      blogLocalDataSource.uploadLocalBlogs(blogs: updatedBlogs);
+
+      return right(response);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
 }

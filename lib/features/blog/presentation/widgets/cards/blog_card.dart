@@ -1,6 +1,7 @@
 import 'package:blog_app/core/utils/calculate_reading_time.dart';
 import 'package:blog_app/features/blog/domain/entities/blog.dart';
 import 'package:blog_app/features/blog/presentation/pages/blog_viewer_page.dart';
+import 'package:blog_app/features/blog/presentation/widgets/buttons/delete_blog_button.dart';
 import 'package:blog_app/features/blog/presentation/widgets/lists/blog_card_category_list.dart';
 import 'package:flutter/material.dart';
 
@@ -42,12 +43,17 @@ class BlogCard extends StatelessWidget {
                     spacing: 8,
                     children: [
                       BlogCardCategoryList(categoryList: blog.topics),
-                      Text(
-                        blog.title,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            blog.title,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          DeleteBlogButton(blog: blog),
+                        ],
                       ),
                     ],
                   ),
