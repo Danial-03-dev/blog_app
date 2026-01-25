@@ -2,6 +2,7 @@ import 'package:blog_app/core/utils/show_snackbar.dart';
 import 'package:blog_app/features/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:blog_app/features/auth/presentation/pages/signup_page.dart';
 import 'package:blog_app/features/auth/presentation/widgets/button/custom_text_button.dart';
+import 'package:blog_app/features/auth/presentation/widgets/button/demo_login_button.dart';
 import 'package:blog_app/features/auth/presentation/widgets/button/gradient_button.dart';
 import 'package:blog_app/features/auth/presentation/widgets/inputs/auth_field.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,7 @@ class _LoginFormState extends State<LoginForm> {
               CustomTextButton(onPressed: handleSignUp, text: 'Sign Up'),
             ],
           ),
+          DemoLoginButton(),
         ],
       ),
     );
