@@ -44,6 +44,7 @@ class BlogCard extends StatelessWidget {
                     children: [
                       BlogCardCategoryList(categoryList: blog.topics),
                       Row(
+                        spacing: 8,
                         children: [
                           Text(
                             blog.title,

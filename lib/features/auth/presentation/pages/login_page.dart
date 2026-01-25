@@ -7,9 +7,14 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: const LoginForm(),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 512),
+            child: const LoginForm(),
+          ),
+        ),
       ),
     );
   }

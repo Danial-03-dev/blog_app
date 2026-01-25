@@ -27,52 +27,68 @@ class BlogViewerPage extends StatelessWidget {
       body: CustomScrollConfig(
         child: Scrollbar(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 16,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Column(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 768),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 4,
+                    spacing: 16,
                     children: [
                       Text(
-                        'By $author',
+                        title,
                         style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 4,
+                        children: [
+                          Text(
+                            'By $author',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            updatedAt,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppPallete.greyColor,
+                            ),
+                          ),
+                          Text(
+                            'Reading time: $timeToRead min',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppPallete.greyColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 512),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Image.network(imageUrl, fit: BoxFit.cover),
+                          ),
                         ),
                       ),
                       Text(
-                        '$updatedAt . $timeToRead min',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppPallete.greyColor,
-                        ),
+                        content,
+                        style: const TextStyle(fontSize: 16, height: 2),
                       ),
                     ],
                   ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Image.network(imageUrl, fit: BoxFit.cover),
-                    ),
-                  ),
-                  Text(
-                    content,
-                    style: const TextStyle(fontSize: 16, height: 2),
-                  ),
-                ],
+                ),
               ),
             ),
           ),

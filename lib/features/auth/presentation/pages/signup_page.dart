@@ -8,9 +8,14 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: SignupForm(),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 512),
+            child: SignupForm(),
+          ),
+        ),
       ),
     );
   }

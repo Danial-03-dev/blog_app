@@ -99,32 +99,40 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
             }
 
             return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    spacing: 20,
-                    children: [
-                      SelectImgBox(onTap: selectImage, image: selectedImage),
-                      BlogCategoryList(
-                        selectedTopics: selectedTopics,
-                        handleCategorySelect: handleCategorySelect,
-                      ),
-                      Column(
-                        spacing: 12,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 640),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        spacing: 20,
                         children: [
-                          BlogEditor(
-                            controller: titleController,
-                            hintText: 'Blog Title',
+                          SelectImgBox(
+                            onTap: selectImage,
+                            image: selectedImage,
                           ),
-                          BlogEditor(
-                            controller: contentController,
-                            hintText: 'Content',
+                          BlogCategoryList(
+                            selectedTopics: selectedTopics,
+                            handleCategorySelect: handleCategorySelect,
+                          ),
+                          Column(
+                            spacing: 12,
+                            children: [
+                              BlogEditor(
+                                controller: titleController,
+                                hintText: 'Blog Title',
+                              ),
+                              BlogEditor(
+                                controller: contentController,
+                                hintText: 'Content',
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),

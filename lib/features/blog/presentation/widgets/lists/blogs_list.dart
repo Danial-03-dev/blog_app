@@ -24,8 +24,15 @@ class BlogsList extends StatelessWidget {
 
         if (state is BlogGetAllBlogsSuccessState) {
           final blogs = state.blogs;
-          return ListView.builder(
+          return GridView.builder(
             itemCount: blogs.length,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 768, // max width of each card
+              mainAxisSpacing: 8, // vertical spacing
+              crossAxisSpacing: 8, // horizontal spacing
+              childAspectRatio:
+                  1.8, // width / height ratio of the card (adjust as needed)
+            ),
             itemBuilder: (context, index) {
               final blog = blogs[index];
               final cardColors = [
@@ -35,7 +42,7 @@ class BlogsList extends StatelessWidget {
               ];
 
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.all(2),
                 child: BlogCard(
                   blog: blog,
                   color: cardColors[index % cardColors.length],
