@@ -21,7 +21,9 @@ Future<void> initDependencies() async {
 
 void _initCore() {
   serviceLocator
-    ..registerLazySingleton(() => AppUserCubit())
+    ..registerLazySingleton(
+      () => AppUserCubit(blogLocalDataSource: serviceLocator()),
+    )
     ..registerLazySingleton(() => InternetConnection())
     ..registerFactory<ConnectionChecker>(
       () => ConnectionCheckerImpl(internetConnection: serviceLocator()),

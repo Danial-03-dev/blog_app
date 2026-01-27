@@ -7,6 +7,8 @@ abstract interface class BlogLocalDataSource {
   void uploadLocalBlogs({required List<BlogModel> blogs});
 
   List<BlogModel> loadBlogs();
+
+  Future<void> clearLocalBlogs();
 }
 
 class BlogLocalDataSourceImpl implements BlogLocalDataSource {
@@ -30,5 +32,10 @@ class BlogLocalDataSourceImpl implements BlogLocalDataSource {
     for (final blog in blogs) {
       await box.add(blog.toJson());
     }
+  }
+
+  @override
+  Future<void> clearLocalBlogs() async {
+    await box.clear();
   }
 }

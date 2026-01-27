@@ -1,3 +1,4 @@
+import 'package:blog_app/core/common/widgets/buttons/logout_button.dart';
 import 'package:blog_app/features/blog/presentation/pages/add_new_blog_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +14,17 @@ class BlogPageAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: const Text('Shared Thoughts'),
       actions: [
-        IconButton(
-          onPressed: handleAddBlog,
-          icon: const Icon(Icons.add_circle_outline),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: handleAddBlog,
+                icon: const Icon(Icons.add_circle_outline),
+              ),
+              LogoutButton(),
+            ],
+          ),
         ),
       ],
     );
