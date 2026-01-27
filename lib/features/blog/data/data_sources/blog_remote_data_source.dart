@@ -73,7 +73,8 @@ class BlogRemoteDataSourceImpl extends BlogRemoteDataSource {
     try {
       final blogs = await supabaseClient
           .from('blogs')
-          .select('*, profiles (name)');
+          .select('*, profiles (name)')
+          .order('updated_at', ascending: false);
 
       return blogs
           .map(
