@@ -7,8 +7,8 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void handleLogout() {
-      context.read<AppUserCubit>().logoutUser();
+    Future<void> handleLogout() async {
+      await context.read<AppUserCubit>().logoutUser();
     }
 
     return IconButton(onPressed: handleLogout, icon: Icon(Icons.logout));

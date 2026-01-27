@@ -61,7 +61,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthIsUserLoggedInEvent event,
     Emitter<AuthState> emit,
   ) async {
-    await _onAuth(event, emit, () => _currentUser(NoParams()));
+    emit(AuthLoadingState());
+
+    final response = await _currentUser(NoParams());
+
+    onFailure(Failure failure) {
+      emit(AuthInitialState());
+    }
+
+    onSuccess(User user) {
+      _emitAuthSuccess(user: user, emit: emit);
+    }
+
+    response.fold(onFailure, onSuccess);
   }
 
   Future<void> _onAuth(
