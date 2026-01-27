@@ -73,7 +73,10 @@ class BlogViewerPage extends StatelessWidget {
                         ],
                       ),
                       ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 512),
+                        constraints: BoxConstraints(
+                          maxHeight: 512,
+                          minHeight: 256,
+                        ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: SizedBox(
