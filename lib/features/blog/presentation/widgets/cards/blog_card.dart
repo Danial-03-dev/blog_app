@@ -46,11 +46,15 @@ class BlogCard extends StatelessWidget {
                       Row(
                         spacing: 8,
                         children: [
-                          Text(
-                            blog.title,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Text(
+                              blog.title,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           DeleteBlogButton(blog: blog),
